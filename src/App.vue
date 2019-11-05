@@ -13,7 +13,12 @@
       |
       <router-link to="/products/new">New Product</router-link>
       |
-      <router-link to="/conditions/new">New Condition</router-link>
+      <input type="text" v-model="searchFor" list="searchBar" />
+      <button v-on:click="routeToPage"></button>
+      <datalist id="searchBar">
+        <option v-for="product in products">{{ product.name }}</option>
+        <option v-for="condition in conditions">{{ condition.name }}</option>
+      </datalist>
     </div>
     <router-view />
   </div>
@@ -41,3 +46,27 @@
   color: #42b983;
 }
 </style>
+
+<script>
+import axios from "axios";
+export default {
+  data: function() {
+    return {
+      products: [],
+      conditions: [],
+      searchFor: ""
+    };
+  },
+  created: function() {
+    axios.get("/api/products/").then(response => {
+      this.products = response.data;
+    }),
+      axios.get("/api/conditions").then(response => {
+        this.conditions = response.data;
+      });
+  },
+  methods: {
+    routeToPage: function() {}
+  }
+};
+</script>

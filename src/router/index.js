@@ -10,6 +10,7 @@ import UsersShow from "../views/UsersShow.vue";
 import ProductsNew from "../views/ProductsNew.vue";
 import ConditionsNew from "../views/ConditionsNew.vue";
 import ConditionsEdit from "../views/ConditionsEdit.vue";
+import ProductsEdit from "../views/ProductsEdit.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -70,6 +71,11 @@ const routes = [
     path: "/conditions/:id",
     name: "conditions-show",
     component: ConditionsShow
+  },
+  {
+    path: "/products/:id/edit",
+    name: "products-edit",
+    component: ProductsEdit
   }
 ];
 

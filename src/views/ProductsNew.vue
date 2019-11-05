@@ -13,6 +13,15 @@
       Description:
       <input type="text" v-model="newProductDescription" />
       <input type="submit" value="Create Product" />
+      <vue-tags-input
+        v-model="tag"
+        :tags="tags"
+        :autocomplete-items="filteredItems"
+        @tags-changed="newTags => (tags = newTags)"
+      />
+      tag:{{ tag }} tags:{{ tags.map(a => a.id) }}
+      filtereditems:
+      {{ filteredItems }}
     </form>
   </div>
 </template>
@@ -21,7 +30,11 @@
 
 <script>
 import axios from "axios";
+import VueTagsInput from "@johmun/vue-tags-input";
 export default {
+  components: {
+    VueTagsInput
+  },
   data: function() {
     return {
       newProductName: "",
@@ -29,17 +42,28 @@ export default {
       newProductImageUrl: "",
       newProductDescription: "",
       errors: [],
-      product: {}
+      product: {},
+      tags: [],
+      tag: "",
+      autocompleteItems: []
     };
   },
-  created: function() {},
+  created: function() {
+    axios.get("/api/conditions/").then(response => {
+      this.autocompleteItems = response.data.map(a => {
+        return { text: a.name, id: a.id };
+      });
+      console.log(response.data);
+    });
+  },
   methods: {
     createProduct: function() {
       var params = {
         name: this.newProductName,
         effects: this.newProductEffects,
         image_url: this.newProductImageUrl,
-        description: this.newProductDescription
+        description: this.newProductDescription,
+        condition_ids: this.tags.map(a => a.id)
       };
       axios
         .post("/api/products", params)
@@ -51,6 +75,13 @@ export default {
           console.log(error.data);
           this.errors = response.data.errors;
         });
+    }
+  },
+  computed: {
+    filteredItems() {
+      return this.autocompleteItems.filter(i => {
+        return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
+      });
     }
   }
 };
