@@ -5,6 +5,7 @@
     <h2>{{ product.description }}</h2>
     <h2>{{ product.effects }}</h2>
     <h1>Helps to Treat</h1>
+    <router-link to="/products/2">product2</router-link>
     <div v-for="condition in product.conditions">
       <h2>
         <router-link :to="`/conditions/${condition.id}`">{{ condition.name }}</router-link>
@@ -27,8 +28,10 @@ export default {
     axios.get("/api/products/" + this.$route.params.id).then(response => {
       this.product = response.data;
     });
+    axios.get("/api/comments/").then(response => {
+      this.comments = response.data;
+    });
   },
-
   methods: {}
 };
 </script>

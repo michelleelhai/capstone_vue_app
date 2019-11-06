@@ -13,14 +13,15 @@
       |
       <router-link to="/products/new">New Product</router-link>
       |
-      <input type="text" v-model="searchFor" list="searchBar" />
-      <button v-on:click="routeToPage"></button>
+      <input type="text" v-model="searchName" list="searchBar" />
+      <button v-on:click="search()">Search</button>
+      {{ searchName }}
       <datalist id="searchBar">
         <option v-for="product in products">{{ product.name }}</option>
         <option v-for="condition in conditions">{{ condition.name }}</option>
       </datalist>
     </div>
-    <router-view />
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
@@ -54,19 +55,41 @@ export default {
     return {
       products: [],
       conditions: [],
-      searchFor: ""
+      searchName: ""
     };
   },
   created: function() {
     axios.get("/api/products/").then(response => {
       this.products = response.data;
-    }),
-      axios.get("/api/conditions").then(response => {
-        this.conditions = response.data;
-      });
+      console.log(this.products);
+    });
+    axios.get("/api/conditions").then(response => {
+      this.conditions = response.data;
+    });
   },
   methods: {
-    routeToPage: function() {}
+    search: function() {
+      // console.log(this.products);
+      var product = this.products.find(x => x.name === this.searchName);
+      var condition = this.conditions.find(x => x.name === this.searchName);
+      if (product) {
+        console.log(product);
+        this.$router.push("/products/" + product.id);
+      } else {
+        if (condition) {
+          console.log(condition);
+          this.$router.push("/conditions/" + condition.id);
+        }
+        // this.conditions.find(x => x.name === this.searchName).id;
+        // console.log(this.conditions.find(x => x.name === this.searchName).id);
+      }
+      // console.log(conditionSearch);
+
+      // var productsSearch = this.products.filter(function(product) {
+      //   return product.name == "searchName";
+      //   console.log(this.products);
+      // });
+    }
   }
 };
 </script>
