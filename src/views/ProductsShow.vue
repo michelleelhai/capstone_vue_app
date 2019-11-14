@@ -43,6 +43,7 @@
                         <p>
                           <strong>{{ comment.user }}</strong>
                           {{ comment.body }}
+                          <i class="fa fa-trash-o" v-on:click="destroyComment(comment)"></i>
                         </p>
                       </div>
                       <h3 class="headline">Helps to Treat</h3>
