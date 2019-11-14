@@ -1,6 +1,74 @@
 <template>
   <div class="products-new">
-    <form v-on:submit.prevent="createProduct()">
+    <div class="col-md-7 col-lg-8 col-xl-8">
+      <div class="page-header bordered">
+        <h1>
+          New Product
+        </h1>
+      </div>
+      <form action="index.php" v-on:submit.prevent="createProduct()">
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+        <div class="form-group">
+          <label for="title">Name</label>
+          <input
+            type="text"
+            v-model="newProductName"
+            class="form-control form-control-lg"
+            id="title"
+            placeholder="Name"
+            autofocus
+          />
+        </div>
+        <div class="form-group">
+          <label for="title">Effects</label>
+          <input
+            type="text"
+            v-model="newProductEffects"
+            class="form-control form-control-lg"
+            id="title"
+            placeholder="Effects"
+            autofocus
+          />
+        </div>
+        <div class="form-group">
+          <label for="title">Image Url</label>
+          <input
+            type="text"
+            v-model="newProductImageUrl"
+            class="form-control form-control-lg"
+            id="title"
+            placeholder="Image Url"
+            autofocus
+          />
+        </div>
+        <div class="form-group">
+          <label for="title">Description</label>
+          <input
+            type="text"
+            v-model="newProductDescription"
+            class="form-control form-control-lg"
+            id="title"
+            placeholder="Description"
+            autofocus
+          />
+          <div>
+            Treats:
+            <vue-tags-input
+              v-model="tag"
+              :tags="tags"
+              :autocomplete-items="filteredItems"
+              @tags-changed="newTags => (tags = newTags)"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-lg btn-primary">Submit Remedy</button>
+        </div>
+      </form>
+    </div>
+    <!-- <form v-on:submit.prevent="createProduct()">
       <ul>
         <li v-for="error in errors">{{ error }}</li>
       </ul>
@@ -22,10 +90,10 @@
       tag:{{ tag }} tags:{{ tags.map(a => a.id) }}
       filtereditems:
       {{ filteredItems }}
-    </form>
+    </form> -->
   </div>
 </template>
-
+b
 <style></style>
 
 <script>

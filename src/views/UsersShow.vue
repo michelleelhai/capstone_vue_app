@@ -1,19 +1,68 @@
 <template>
   <div class="user-show">
-    <h1>{{ user.username }}</h1>
-    <div v-for="condition in user.conditions">
+    <!-- <h1>{{ user.username }}'s Products</h1> -->
+    <!--    <div v-for="condition in user.conditions">
       <h2>
         <router-link :to="`/conditions/${condition.id}`">{{ condition.name }}</router-link>
         <button v-on:click="destroyCondition(condition)"></button>
         <router-link :to="`/conditions/${condition.id}/edit`">Edit condition</router-link>
       </h2>
     </div>
-    <div v-for="product in user.products">
-      <h2>
-        <router-link :to="`/products/${product.id}`">{{ product.name }}</router-link>
-        <button v-on:click="destroyProduct(product)"></button>
-        <router-link :to="`/products/${product.id}/edit`">Edit Product</router-link>
-      </h2>
+ -->
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col col-lg-12 col-xl-10">
+          <div class="page-header">
+            <h1>{{ user.username }}'s Products</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content">
+      <div class="container">
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-12 col-xl-10">
+            <div class="row has-sidebar">
+              <div class="col-md-12">
+                <div class="clearfix"></div>
+                <div class="item-listing grid">
+                  <div class="row">
+                    <div class="col-lg-6" v-for="product in user.products">
+                      <div class="item">
+                        <div class="item-image">
+                          <router-link :to="`/products/${product.id}`">
+                            <img :src="product.image" class="img-fluid" alt="" />
+                            <div class="item-meta">
+                              <div class="item-price">
+                                {{ product.name }}
+                              </div>
+                            </div>
+                            <div class="item-badges">
+                              <div class="item-badge-right">
+                                <router-link style="color:white" :to="`/products/${product.id}/edit`">Edit</router-link>
+                              </div>
+                            </div>
+                          </router-link>
+                          <a href="#" class="save-item">
+                            <i class="fa fa-trash-o" v-on:click="destroyProduct(product)"></i>
+                          </a>
+                        </div>
+                        <div class="item-info">
+                          <h3 class="item-title">Effecs: {{ product.effects }}</h3>
+                          <div class="item-location">
+                            {{ product.description }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,9 +75,9 @@ export default {
   data: function() {
     return {
       user: {},
-      errors: {},
-      conditions: {},
-      products: {}
+      errors: [],
+      conditions: [],
+      products: []
     };
   },
   created: function() {
@@ -36,6 +85,7 @@ export default {
       this.user = response.data;
       this.products = response.data.products;
       this.conditions = response.data.conditions;
+      console.log(this.products);
     });
   },
   methods: {
